@@ -1,7 +1,8 @@
-import express, { Express, Request, Response } from 'express';
+import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import errorMiddleware from './middleware/error.middleware'; 
 
 dotenv.config();
@@ -21,6 +22,7 @@ class App {
    
     private initializeMiddlewares() {
       this.app.use(bodyParser.json());
+      this.app.use(cookieParser());
     }
    
     private initializeControllers(controllers: any[]) {
@@ -41,7 +43,8 @@ class App {
           MONGO_Host
         } = process.env;
         const URL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongo:${MONGO_PORT}`
-        mongoose.connect(URL)
+        const live_data = `mongodb+srv://waelelsafty07:dQMYdYodwgJWveFN@cluster0.oso4wk9.mongodb.net/`
+        mongoose.connect(live_data)
         .then(()=>console.log('connect to db...'))
         .catch(err=> console.log('failed to connect', err));
     }
