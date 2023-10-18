@@ -3,7 +3,10 @@ import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+const swaggerUi = require('swagger-ui-express');
+import specs from './swaggerConfig';
 import errorMiddleware from './middleware/error.middleware'; 
+import OnRedis from './OnRedis';
 
 dotenv.config();
 
@@ -16,6 +19,7 @@ class App {
       this.port = port;
       this.connectToTheDatabase();
       this.initializeMiddlewares();
+      this.connectToTheRedis()
       this.initializeControllers(controllers);
       this.initializeErrorHandling()
     }
@@ -26,6 +30,7 @@ class App {
     }
    
     private initializeControllers(controllers: any[]) {
+      this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
       controllers.forEach((controller) => {
         this.app.use('/', controller.router);
       });
@@ -33,6 +38,10 @@ class App {
 
     private initializeErrorHandling() {
       this.app.use(errorMiddleware);
+    }
+
+    private connectToTheRedis() {
+      new OnRedis()
     }
 
     private connectToTheDatabase() {

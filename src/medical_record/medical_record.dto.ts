@@ -1,13 +1,13 @@
-import { IsOptional, IsString, ValidateNested, ValidateIf } from 'class-validator';
+import { IsOptional, IsString, IsMongoId, ValidateIf } from 'class-validator';
 
 class CreateMedicalRecordDto {
 
 
-  @IsString()
+  @IsMongoId()
   public patient: string;
 
 
-  @IsString()
+  @IsMongoId()
   public doctor: string;
 
   @IsString()
