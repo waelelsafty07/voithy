@@ -1,14 +1,14 @@
 import * as mongoose from 'mongoose';
 import MedicalRecord from './medical_record.interface';
 
-const userSchema = new mongoose.Schema({
-  patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' },
-  doctor: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' },
+const MedicalSchema = new mongoose.Schema({
+  patient: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  doctor: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   note: String,
   treatment: String,
   date: Date,
 });
  
-const userModel = mongoose.model<MedicalRecord & mongoose.Document>('Medical Record', userSchema);
+const MedicalModel = mongoose.model<MedicalRecord & mongoose.Document>('Medical Record', MedicalSchema);
  
-export default userModel;
+export default MedicalModel;

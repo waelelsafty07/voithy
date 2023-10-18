@@ -16,7 +16,8 @@ class UserController implements Controller {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/:id`, authMiddleware, this.getUserById);
+    this.router.get(`${this.path}/patients`, authMiddleware, this.getAllPatient);
+    this.router.get(`${this.path}/user/:id`, authMiddleware, this.getUserById);
   }
 
   private getUserById = async (request: Request, response: Response, next: NextFunction) => {
@@ -30,7 +31,38 @@ class UserController implements Controller {
       next(new UserNotFoundException(id));
     }
   }
+  /**
+   * @swagger
+   * /users/patients:
+   *  get:
+   *     tags:
+   *     - Patients
+   *     description: Responds if the app is up and running
+   *     responses:
+   *       200:
+   *         description: App is up and running
+   */
+  private getAllPatient = async (request: Request, response: Response, next: NextFunction) => {
+    const userQuery = this.user.find({ role: 'patient' }).populate('medical_history');
+   
+    const user = await userQuery.exec();;
+    if (user) {
+      response.send(user);
+    } else {
+      
+    }
+  }
 
+  private getMyPatients = async (request: Request, response: Response, next: NextFunction) => {
+    const userQuery = this.user.find({ role: 'patient' }).populate('medical_history');
+   
+    const user = await userQuery.exec();;
+    if (user) {
+      response.send(user);
+    } else {
+      
+    }
+  }
 
 }
 
